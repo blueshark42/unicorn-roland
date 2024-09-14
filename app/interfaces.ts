@@ -6,7 +6,7 @@ export interface IMedicalData {
   results: IMedicalDataResult[];
 }
 
-interface IMedicalDataResult {
+export interface IMedicalDataResult {
   theme: string;
   sub_theme: string;
   topic: string;
