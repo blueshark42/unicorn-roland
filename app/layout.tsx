@@ -29,10 +29,10 @@ const RootLayout = ({ children }: React.PropsWithChildren) => (
         <ConfigProvider
           theme={{
             token: {
-              colorPrimary: "#00b96b",
+              colorPrimary: "var(--primary)",
               borderRadius: 2,
 
-              colorBgContainer: "#f6ffed",
+              colorBgContainer: "#ffffff",
             },
           }}
         >
