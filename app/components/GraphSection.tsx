@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { Card } from "antd";
 import { Chart } from "@antv/g2";
-import { trpc } from "../../utils/trpc";
+import { trpc } from "@/trpc/client";
 
 const GraphCard = ({
   title,
@@ -96,11 +96,8 @@ export default function GraphSection() {
     setupCharts();
   }, []);
 
-  const data = trpc.medical.fetchMedicalData.useQuery({
-    nWeeks: 4,
-  }).data;
-
-  console.log(data);
+  const greeting = trpc.hello.useQuery({ text: "hello" });
+  console.log(greeting);
 
   return (
     <div className="flex flex-row justify-evenly items-center gap-3">

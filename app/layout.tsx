@@ -5,7 +5,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
 
 import Header from "./components/Header";
-import { ClientProvider } from "./client/trpcClient";
+import { TRPCProvider } from "@/trpc/client";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 };
 
 const RootLayout = ({ children }: React.PropsWithChildren) => (
-  <ClientProvider>
+  <TRPCProvider>
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -46,7 +46,7 @@ const RootLayout = ({ children }: React.PropsWithChildren) => (
         </AntdRegistry>
       </body>
     </html>
-  </ClientProvider>
+  </TRPCProvider>
 );
 
 export default RootLayout;
