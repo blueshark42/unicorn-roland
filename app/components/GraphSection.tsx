@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Card, Divider } from "antd";
+import { Card, Divider, Button } from "antd";
 import { Chart } from "@antv/g2";
 import { trpc } from "@/trpc/client";
 import { helix } from "ldrs";
-import { CommentOutlined } from "@ant-design/icons";
+import { CommentOutlined, StarOutlined, StarFilled } from "@ant-design/icons";
 import Image from "next/image";
 
 import placeholderImage from "@/app/public/images/corgi.png";
@@ -20,11 +20,35 @@ const GraphCard = ({
   title: string;
   children: React.ReactNode;
 }) => {
+  const ExtraSection = () => {
+    const [isFavorite, setIsFavorite] = useState(false);
+    const mutation = trpc.favorite.useMutation();
+
+    const handleFavorite = () => {
+      mutation.mutate(title);
+      setIsFavorite((prev) => !prev);
+    };
+
+    return (
+      <Button
+        type="text"
+        onClick={handleFavorite}
+        icon={
+          isFavorite ? (
+            <StarFilled style={{ color: "#a3a3a3", fontSize: "18px" }} />
+          ) : (
+            <StarOutlined style={{ color: "#a3a3a3", fontSize: "18px" }} />
+          )
+        }
+      ></Button>
+    );
+  };
+
   return (
     <Card
       title={title}
       className="flex-1 rounded-lg p-0 m-0"
-      extra={<a href="#">Favorite</a>}
+      extra={<ExtraSection />}
       styles={{ body: { padding: 0 } }}
     >
       <div>{children}</div>
@@ -41,11 +65,18 @@ const GraphCard = ({
         />
 
         <div className="flex items-center">
-          <span className="text-md text-neutral-400">3</span>
-          <CommentOutlined
-            className="ml-2"
-            style={{ color: "#a3a3a3", fontSize: "18px" }}
-          />
+          <Button
+            type="text"
+            icon={
+              <CommentOutlined
+                className="ml-2"
+                style={{ color: "#a3a3a3", fontSize: "18px" }}
+              />
+            }
+            iconPosition="end"
+          >
+            <span className="text-md text-neutral-400">3</span>
+          </Button>
         </div>
       </div>
     </Card>
