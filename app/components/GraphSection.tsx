@@ -96,8 +96,9 @@ export default function GraphSection() {
     setupCharts();
   }, []);
 
-  const greeting = trpc.hello.useQuery({ text: "hello" });
-  console.log(greeting);
+  const [ret] = trpc.medical.fetchMedicalData.useSuspenseQuery({ nWeeks: 12 });
+
+  console.log(ret);
 
   return (
     <div className="flex flex-row justify-evenly items-center gap-3">
