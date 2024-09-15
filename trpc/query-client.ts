@@ -9,15 +9,6 @@ export function makeQueryClient() {
       queries: {
         staleTime: 30 * 1000,
       },
-      dehydrate: {
-        // serializeData: superjson.serialize,
-        shouldDehydrateQuery: (query: any) =>
-          defaultShouldDehydrateQuery(query) ||
-          query.state.status === "pending",
-      },
-      hydrate: {
-        // deserializeData: superjson.deserialize,
-      },
     },
   });
 }
