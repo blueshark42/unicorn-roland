@@ -13,7 +13,7 @@ export default function Dashboard() {
   const Header = () => {
     return (
       <div className="flex flex-row justify-between items-center py-3">
-        <h2 className="text-xl">Dashboard</h2>
+        <h2 className="text-lg text-neutral-600 font-medium">Dashboard</h2>
 
         <div className="flex gap-1">
           <Button
@@ -55,7 +55,7 @@ export default function Dashboard() {
             }
             iconPosition="end"
           >
-            <span className="bg-primary w-6 h-6 flex items-center justify-center rounded-full font-semibold font-sm text-white">
+            <span className="bg-primary w-6 h-6 !flex !justify-center !items-center rounded-full font-semibold text-xs text-white">
               9+
             </span>
             Filter

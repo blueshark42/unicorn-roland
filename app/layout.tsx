@@ -8,6 +8,7 @@ import { TRPCProvider } from "@/trpc/client";
 import Header from "./components/Header";
 
 import "./globals.css";
+import Footer from "./components/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -44,6 +45,7 @@ const RootLayout = ({ children }: React.PropsWithChildren) => (
           >
             <Header />
             <div>{children}</div>
+            <Footer />
           </ConfigProvider>
         </AntdRegistry>
       </body>
