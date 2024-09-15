@@ -132,10 +132,8 @@ export default function GraphSection() {
       testingChart.render();
     };
 
-    if (!testingRet.data || !bloodRet.data) return;
-
     setupCharts();
-  }, [testingRet, bloodRet]);
+  }, [testingRet.data, bloodRet.data]);
 
   if (!testingRet.data)
     return (

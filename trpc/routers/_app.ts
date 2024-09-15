@@ -8,10 +8,7 @@ export const appRouter = createTRPCRouter({
     const favorites = [];
     favorites.push(input);
 
-    console.log("New favorite! ->", favorites);
-
     // We could save this to localStorage, push to DB via API, or similar.
-
     // localStorage.setItem(LocalStorageEnum.Favorites, favorites)
 
     // Not handling types here but favorites could be a list/array of IDs (bloodborne-chart, testing-chart, ...)
