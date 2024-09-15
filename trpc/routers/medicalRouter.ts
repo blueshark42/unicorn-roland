@@ -11,50 +11,33 @@ interface ProcessedData {
   tests: number;
 }
 
+// Create a medicalRouter that handles medical-related queries
 export const medicalRouter = createTRPCRouter({
   fetchMedicalData: baseProcedure
     .input(
       z.object({
-        nMonths: z.number().min(1),
+        nWeeks: z.number().min(1),
       })
     )
     .query(async ({ input }) => {
-      const { nMonths } = input;
+      const { nWeeks } = input;
 
       let nextUrl: string | null = COVID_API_URL;
       let allResults: IMedicalDataResult[] = [];
 
-      // Calculate the number of days to fetch based on the input months
-      const currentDate = new Date();
-      const pastDate = new Date(currentDate);
-      pastDate.setMonth(currentDate.getMonth() - nMonths);
-
-      // Fetch data until we reach the target months
-      while (nextUrl) {
+      while (nextUrl && allResults.length / 7 < nWeeks) {
         try {
           const response = await axios.get<IMedicalData>(nextUrl);
           const { results, next } = response.data;
 
-          // Filter results based on the desired date range
-          const filteredResults = results.filter(
-            (item) => new Date(item.date) >= pastDate
-          );
-
-          allResults = [...allResults, ...filteredResults];
+          allResults = [...allResults, ...results];
           nextUrl = next;
-
-          // If the earliest date is older than the desired range, stop fetching
-          const earliestDate = new Date(
-            filteredResults[filteredResults.length - 1]?.date
-          );
-          if (earliestDate < pastDate) break;
         } catch (error) {
           console.error("Error fetching medical data:", error);
           break;
         }
       }
 
-      // Process the data into months and sum up the tests
       const processedData: ProcessedData[] = allResults.reduce((acc, item) => {
         const monthName = new Date(item.date).toLocaleString("default", {
           month: "long",

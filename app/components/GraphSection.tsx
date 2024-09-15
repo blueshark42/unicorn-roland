@@ -3,6 +3,9 @@ import React, { useEffect } from "react";
 import { Card } from "antd";
 import { Chart } from "@antv/g2";
 import { trpc } from "@/trpc/client";
+import { helix } from "ldrs";
+
+helix.register();
 
 const GraphCard = ({
   title,
@@ -19,6 +22,10 @@ const GraphCard = ({
 };
 
 export default function GraphSection() {
+  const testingRet = trpc.medical.fetchMedicalData.useQuery({
+    nWeeks: 20,
+  });
+
   useEffect(() => {
     const setupCharts = async () => {
       const testingData = [
@@ -82,30 +89,36 @@ export default function GraphSection() {
       bloodInfectionsChart.line().style("strokeWidth", 2).tooltip(false);
       bloodInfectionsChart.render();
 
+      console.log(testingRet.data);
+
       testingChart
         .interval()
-        .data(testingData)
-        .encode("x", "genre")
-        .encode("y", "sold")
-        .encode("color", "genre");
+        .data(testingRet.data)
+        .encode("x", "month")
+        .encode("y", "tests")
+        .encode("color", "month");
 
       bloodInfectionsChart.render();
       testingChart.render();
     };
 
+    if (!testingRet.data) return;
+
     setupCharts();
-  }, []);
+  }, [testingRet]);
 
-  const [ret] = trpc.medical.fetchMedicalData.useSuspenseQuery({ nWeeks: 12 });
-
-  console.log(ret);
-
+  if (!testingRet.data)
+    return (
+      <div className="flex justify-center items-center mt-10">
+        <l-helix size="72" speed="2.5" color="black"></l-helix>
+      </div>
+    );
   return (
     <div className="flex flex-row justify-evenly items-center gap-3">
       <GraphCard title="Chart 1">
         <div id="blood-infections-chart" className="w-full"></div>
       </GraphCard>
-      <GraphCard title="Chart 2">
+      <GraphCard title="COVID-19 Testing by month">
         <div id="testing-chart" className="w-full"></div>
       </GraphCard>
     </div>
