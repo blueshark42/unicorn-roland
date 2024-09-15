@@ -1,8 +1,9 @@
 import { z } from "zod";
 import { baseProcedure, createTRPCRouter } from "../init";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { IMedicalData, IMedicalDataResult } from "../../app/interfaces";
 
+// Assuming we only plan to use these endpoints here, we can leave it here.
 const COVID_API_URL =
   "https://api.ukhsa-dashboard.data.gov.uk/themes/infectious_disease/sub_themes/respiratory/topics/COVID-19/geography_types/Nation/geographies/England/metrics/COVID-19_testing_PCRcountByDay";
 
@@ -33,7 +34,6 @@ interface BloodProcessedData {
   value: number;
 }
 
-// Create a medicalRouter that handles medical-related queries
 export const medicalRouter = createTRPCRouter({
   fetchCovidTestingData: baseProcedure
     .input(
@@ -49,7 +49,8 @@ export const medicalRouter = createTRPCRouter({
 
       while (nextUrl && allResults.length / 7 < nWeeks) {
         try {
-          const response = await axios.get<IMedicalData>(nextUrl);
+          const response: AxiosResponse<IMedicalData> =
+            await axios.get<IMedicalData>(nextUrl);
           const { results, next } = response.data;
 
           allResults = [...allResults, ...results];
@@ -87,6 +88,9 @@ export const medicalRouter = createTRPCRouter({
 
       return processedData;
     }),
+
+  // BLOOD INFECTIONS
+
   fetchBloodInfections: baseProcedure
     .input(
       z.object({
@@ -103,8 +107,11 @@ export const medicalRouter = createTRPCRouter({
 
         while (nextUrl && allResults.length / 7 < nWeeks) {
           try {
-            const response = await axios.get<IMedicalData>(nextUrl);
+            const response: AxiosResponse<IMedicalData, any> =
+              await axios.get<IMedicalData>(nextUrl);
+
             const { results, next } = response.data;
+
             allResults = [...allResults, ...results];
             nextUrl = next;
           } catch (error) {
@@ -113,7 +120,6 @@ export const medicalRouter = createTRPCRouter({
           }
         }
 
-        // Process and group the data by disease, year, and month, summing the values
         const groupedData = allResults.reduce((acc, item) => {
           const key = `${disease.name}-${item.year}-${item.month}`;
           if (!acc[key]) {

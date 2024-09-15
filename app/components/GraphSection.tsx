@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useEffect } from "react";
+
+import { Card, Divider } from "antd";
 import { Chart } from "@antv/g2";
 import { trpc } from "@/trpc/client";
 import { helix } from "ldrs";
-import { Card, Divider } from "antd";
-import Image from "next/image";
 import { CommentOutlined } from "@ant-design/icons";
+import Image from "next/image";
+
 import placeholderImage from "@/app/public/images/corgi.png";
 
 helix.register();

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
+
 import { ConfigProvider } from "antd";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { TRPCProvider } from "@/trpc/client";
 
 import Header from "./components/Header";
-import { TRPCProvider } from "@/trpc/client";
+
+import "./globals.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

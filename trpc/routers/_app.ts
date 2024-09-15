@@ -18,6 +18,4 @@ export const appRouter = createTRPCRouter({
   medical: medicalRouter,
 });
 
-// export type definition of API
-
 export type AppRouter = typeof appRouter;

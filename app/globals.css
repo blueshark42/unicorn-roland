@@ -8,6 +8,8 @@
   --primary: #166534;
 }
 
+/* For the sake of this example, we do not need dark mode. */
+
 /* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;

@@ -1,5 +1,6 @@
-import Logo from "@/app/public/images/logo-unicorn.png";
 import Image from "next/image";
+
+import Logo from "@/app/public/images/logo-unicorn.png";
 
 export default function Header() {
   return (
