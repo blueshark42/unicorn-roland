@@ -5,13 +5,10 @@ import React, { useEffect, useState } from "react";
 import { Card, Divider, Button } from "antd";
 import { Chart } from "@antv/g2";
 import { trpc } from "@/trpc/client";
-import { helix } from "ldrs";
 import { CommentOutlined, StarOutlined, StarFilled } from "@ant-design/icons";
 import Image from "next/image";
 
 import placeholderImage from "@/app/public/images/corgi.png";
-
-helix.register();
 
 const GraphCard = ({
   title,
@@ -135,12 +132,14 @@ export default function GraphSection() {
     setupCharts();
   }, [testingRet.data, bloodRet.data]);
 
-  if (!testingRet.data)
+  if (!testingRet.data || !bloodRet.data) {
     return (
       <div className="flex justify-center items-center mt-10">
-        <l-helix size="72" speed="2.5" color="black"></l-helix>
+        <Loader />
       </div>
     );
+  }
+
   return (
     <div className="flex flex-row justify-evenly items-center gap-3">
       <GraphCard title="Bloodborne Infections">
@@ -151,4 +150,15 @@ export default function GraphSection() {
       </GraphCard>
     </div>
   );
+
+  function Loader() {
+    useEffect(() => {
+      async function getLoader() {
+        const { helix } = await import("ldrs");
+        helix.register();
+      }
+      getLoader();
+    }, []);
+    return <l-helix size="72" speed="2.5" color="black"></l-helix>;
+  }
 }
